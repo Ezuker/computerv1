@@ -1,5 +1,5 @@
 import sys as sys
-from re import findall
+import re as re
 from math import sqrt
 
 
@@ -50,32 +50,42 @@ class PolynomialEquationSolver:
 
 
 	def parse(self):
-		# self.terms = findall(r'([+-]?\s*\d*\.?\d*)\s*\*?\s*X\^?(\d*)', self.equation)
-		self.terms = findall(r'([+-]?\s*\d*\.?\d*)\s*\*?\s*X?(?:\^(\d+))?', self.equation)
-		print(self.terms)
+		self.equation = self.equation.replace(' ','')
+		self.equation = self.equation.replace('-', "+-")
+		self.terms = self.equation.split("+")
 		self.coef = {}
-		for coef_str, power_str in self.terms:
-			# Handle power
-			power = power_str if power_str else '0' if 'X' not in coef_str else '1'
+		for term in self.terms:
+			# Ignorer les termes vides
+			if not term:
+				continue
 			
-			# Clean up coefficient
-			coef_str = coef_str.replace(' ', '')
-			if coef_str in ['+', '-']:
-				coef_str += '1'
+			# Gestion du signe
+			sign = 1
+			if term.startswith('-'):
+				sign = -1
+				term = term[1:]
 			
-			# Handle empty coefficient for X terms
-			if coef_str == 'X':
-				coef_str = '1'
-			elif coef_str == '-X':
-				coef_str = '-1'
-			
-			# Convert to float
-			try:
-				coefficient = float(coef_str)
-				self.coef[power] = coefficient
-			except ValueError:
-				print(f"Could not parse coefficient: {coef_str}")
-		
+			# Analyse du terme
+			match = re.match(r'^(\d*\.?\d*)\*?X?(?:\^(\d+))?$', term)
+			if match:
+				coef_str, power_str = match.groups()
+				
+				# Gestion du coefficient
+				if not coef_str and 'X' in term:
+					coef_str = '1'
+				elif not coef_str:
+					coef_str = '0'
+				
+				# Gestion de la puissance
+				if not power_str:
+					power = '1' if 'X' in term else '0'
+				else:
+					power = power_str
+				
+				# Conversion et ajout
+				coefficient = float(coef_str) * sign
+				self.coef[power] = self.coef.get(power, 0) + coefficient
+
 
 	def reductionForm(self, otherSide: "PolynomialEquationSolver"):
 		nb_step = 0
@@ -103,23 +113,23 @@ class PolynomialEquationSolver:
 			return
 		if last_power == 2:
 			print("Polynomial degree: 2")
-			delta = self.coef['1'] ** 2 - 4 * self.coef['2'] * self.coef['0']
+			delta = self.coef.get('1', 0) ** 2 - 4 * self.coef.get('2', 0) * self.coef.get('0', 0)
 			if delta < 0:
 				print("The discriminant is negative")
 				print("The equation doesn't have reel solutions")
 			elif delta == 0:
 				print("The discriminant is equal to 0")
 				print("There is one solution:")
-				print(f"x : {-self.coef['1'] / (self.coef['2'] * 2)}")
+				print(f"x : {-self.coef.get('1', 0) / (self.coef.get('2', 0) * 2)}")
 			else:
 				print("The discriminant is positive")
 				print("There is two solutions:")
-				print(f"x1 : {(-self.coef['1'] + sqrt(delta)) / (2 * self.coef['2'])}")
-				print(f"x2 : {(-self.coef['1'] - sqrt(delta)) / (2 * self.coef['2'])}")
+				print(f"x1 : {(-self.coef.get('1', 0) + sqrt(delta)) / (2 * self.coef.get('2', 0))}")
+				print(f"x2 : {(-self.coef.get('1', 0) - sqrt(delta)) / (2 * self.coef.get('2', 0))}")
 		elif last_power == 1:
 			print("Polynomial degree: 1")
 			print("The solution is :")
-			print(f"{self.coef['0'] / -self.coef['1']}")
+			print(f"{self.coef.get('0', 0) / -self.coef.get('1', 0)}")
 		else:
 			print("Please provide a polynomial equation")
 
