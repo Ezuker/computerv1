@@ -30,5 +30,10 @@ def negatifDelta(coef, delta):
 	print("There is two complex solutions")
 	delta = -delta
 	denominator = (2 * coef.get('2', 0))
-	print(f"{-coef.get('1', 0)} / {denominator} + (sqrt({delta}) / {denominator}) * i")
-	print(f"{-coef.get('1', 0)} / {denominator} - (sqrt({delta}) / {denominator}) * i")
+	x_reelpart = -coef.get('1', 0) / denominator
+	x_imagpart = sqrt(delta) / denominator
+	print(f"x1: {x_reelpart} + i * {x_imagpart}")
+	print(f"x2: {x_reelpart} - i * {x_imagpart}")
+	if (x_reelpart % 1 != 1):
+		print(f"{fractionResult(-coef.get('1', 0), denominator)} + i * {x_imagpart}")
+		print(f"{fractionResult(-coef.get('1', 0), denominator)} - i * {x_imagpart}")
