@@ -1,5 +1,3 @@
-from class_PolynomialEquation import PolynomialEquationSolver
-
 def format_term(coef, power, term=True):
 	if coef == 0:
 		return ""
