@@ -44,6 +44,41 @@ def printer(left: "PolynomialEquationSolver", right: "PolynomialEquationSolver")
 	print("")
 
 
+def fractionResult(numerator, denominator):
+	def gcd(a, b):
+		"""
+		Function to find the greatest common divisor
+		eg: 51 and 45 can be divided by 3
+		"""
+		while b:
+			a, b = b, a % b
+		return a
+
+	if denominator == 0:
+		raise ValueError("Denominator cannot be zero")
+
+	sign = 1
+	if numerator * denominator < 0:
+		sign = -1
+
+	numerator = abs(numerator)
+	denominator = abs(denominator)
+
+	# Calculate the GCD
+	divisor = gcd(numerator, denominator)
+	print(f"divisor {divisor}")
+	print(f"numerator {numerator}")
+	print(f"denominator {denominator}")
+
+	# Reduce the fraction
+	reduced_numerator = sign * (numerator // divisor)
+	reduced_denominator = denominator // divisor
+	print(f"reduced nume {reduced_numerator}")
+	print(f"reduced deno {reduced_denominator}")
+
+	print("The fractional result is:")
+	return (f"{reduced_numerator}/{reduced_denominator}")
+
 class PolynomialEquationSolver:
 	def __init__(self, equation):
 		self.equation = equation
@@ -55,17 +90,14 @@ class PolynomialEquationSolver:
 		self.terms = self.equation.split("+")
 		self.coef = {}
 		for term in self.terms:
-			# Ignorer les termes vides
 			if not term:
 				continue
 			
-			# Gestion du signe
 			sign = 1
 			if term.startswith('-'):
 				sign = -1
 				term = term[1:]
 			
-			# Analyse du terme
 			match = re.match(r'^(\d*\.?\d*)\*?X?(?:\^(\d+))?$', term)
 			if match:
 				coef_str, power_str = match.groups()
@@ -85,6 +117,8 @@ class PolynomialEquationSolver:
 				# Conversion et ajout
 				coefficient = float(coef_str) * sign
 				self.coef[power] = self.coef.get(power, 0) + coefficient
+			else:
+				raise ValueError("Please, provide a good prompt")
 
 
 	def reductionForm(self, otherSide: "PolynomialEquationSolver"):
@@ -101,6 +135,8 @@ class PolynomialEquationSolver:
 				printer(self, otherSide)
 
 	
+
+
 	def calculDelta(self):
 		self.coef = {power: coef for power, coef in self.coef.items() if coef != 0}
 		if len(self.coef) == 0:
@@ -126,10 +162,14 @@ class PolynomialEquationSolver:
 				print("There is two solutions:")
 				print(f"x1 : {(-self.coef.get('1', 0) + sqrt(delta)) / (2 * self.coef.get('2', 0))}")
 				print(f"x2 : {(-self.coef.get('1', 0) - sqrt(delta)) / (2 * self.coef.get('2', 0))}")
+				print(f"{fractionResult((-self.coef.get('1', 0) + sqrt(delta)), (2 * self.coef.get('2', 0)))}")
+				print(f"{fractionResult((-self.coef.get('1', 0) - sqrt(delta)), (2 * self.coef.get('2', 0)))}")
+
 		elif last_power == 1:
 			print("Polynomial degree: 1")
 			print("The solution is :")
 			print(f"{self.coef.get('0', 0) / -self.coef.get('1', 0)}")
+			print(f"{fractionResult(self.coef.get('0', 0), -self.coef.get('1', 0))}")
 		else:
 			print("Please provide a polynomial equation")
 
