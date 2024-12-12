@@ -1,83 +1,43 @@
 import sys as sys
 import re as re
 from math import sqrt
+from utils import printer, fractionResult
 
 
-def format_term(coef, power, term=True):
-	if coef == 0:
-		return ""
-	if coef < 0 and term == True:
-		return f"- {-coef} * X^{power} "
-	if term == True:
-		return f"+ {coef} * X^{power} "
-	return f"{coef} * X^{power} "
+def posDelta(coef, delta):
+	print("The discriminant is positive")
+	print("There is two solutions:")
+
+	x1 = (-coef.get('1', 0) + sqrt(delta)) / (2 * coef.get('2', 0))
+	x2 = (-coef.get('1', 0) - sqrt(delta)) / (2 * coef.get('2', 0))
+	print(f"x1 : {x1}")
+	print(f"x2 : {x2}")
+	if (x1 % 1 != 0):
+		print(f"{fractionResult((-coef.get('1', 0) + sqrt(delta)), (2 * coef.get('2', 0)))}")
+	if (x2 % 1 != 0):
+		print(f"{fractionResult((-coef.get('1', 0) - sqrt(delta)), (2 * coef.get('2', 0)))}")
 
 
-def printer(left: "PolynomialEquationSolver", right: "PolynomialEquationSolver"):
-	left_terms = []
-	term = False
-	for power, coef in left.coef.items():
-		str = format_term(coef, int(power), term)
-		if str:
-			left_terms.append(str)
-			term = True
+def zeroDelta(coef, delta):
+	print("The discriminant is equal to 0")
+	print("There is one solution:")
 
-	right_terms = []
-	term = False
-	for power, coef in right.coef.items():
-		str = format_term(coef, int(power), term)
-		if str:
-			right_terms.append(str)
-			term = True
-
-	left_equation = ''.join(left_terms).strip()
-	right_equation = ''.join(right_terms).strip()
-
-	if not left_equation and not right_equation:
-		print("0 = 0")
-	elif not left_equation:
-		print(f"0 = {right_equation}")
-	elif not right_equation:
-		print(f"{left_equation} = 0")
-	else:
-		print(f"{left_equation} = {right_equation}")
-	print("")
+	x = -coef.get('1', 0) / (coef.get('2', 0) * 2)
+	print(f"x : {x}")
+	if (x % 1 != 0):
+		print(f"{fractionResult(-coef.get('1', 0), (coef.get('2', 0) * 2))}")
 
 
-def fractionResult(numerator, denominator):
-	def gcd(a, b):
-		"""
-		Function to find the greatest common divisor
-		eg: 51 and 45 can be divided by 3
-		"""
-		while b:
-			a, b = b, a % b
-		return a
+def negatifDelta(coef, delta):
+	print("The discriminant is negative")
+	print("There is two complex solutions")
+	delta = -delta
+	numerator = (-coef.get('1', 0) - sqrt(delta))
+	denominator = (2 * coef.get('2', 0))
+	print(f"{-coef.get('1', 0)} / {denominator} + (sqrt({delta}) / {denominator}) * i")
+	print(f"{-coef.get('1', 0)} / {denominator} - (sqrt({delta}) / {denominator}) * i")
 
-	if denominator == 0:
-		raise ValueError("Denominator cannot be zero")
 
-	sign = 1
-	if numerator * denominator < 0:
-		sign = -1
-
-	numerator = abs(numerator)
-	denominator = abs(denominator)
-
-	# Calculate the GCD
-	divisor = gcd(numerator, denominator)
-	print(f"divisor {divisor}")
-	print(f"numerator {numerator}")
-	print(f"denominator {denominator}")
-
-	# Reduce the fraction
-	reduced_numerator = sign * (numerator // divisor)
-	reduced_denominator = denominator // divisor
-	print(f"reduced nume {reduced_numerator}")
-	print(f"reduced deno {reduced_denominator}")
-
-	print("The fractional result is:")
-	return (f"{reduced_numerator}/{reduced_denominator}")
 
 class PolynomialEquationSolver:
 	def __init__(self, equation):
@@ -125,16 +85,14 @@ class PolynomialEquationSolver:
 		nb_step = 0
 		print(f"Equation :")
 		printer(self, otherSide)
-		for power, coef in self.coef.items():
-			other_coef = otherSide.coef.get(power, 0)
-			self.coef[power] = coef - other_coef
+		for power, coef in otherSide.coef.items():
+			selfcoef = self.coef.get(power, 0)
+			self.coef[power] = selfcoef - coef
 			if power in otherSide.coef:
 				otherSide.coef[power] = 0
 				nb_step = nb_step + 1
 				print(f"Reduce form step {nb_step}")
 				printer(self, otherSide)
-
-	
 
 
 	def calculDelta(self):
@@ -151,25 +109,18 @@ class PolynomialEquationSolver:
 			print("Polynomial degree: 2")
 			delta = self.coef.get('1', 0) ** 2 - 4 * self.coef.get('2', 0) * self.coef.get('0', 0)
 			if delta < 0:
-				print("The discriminant is negative")
-				print("The equation doesn't have reel solutions")
+				negatifDelta(self.coef, delta)
 			elif delta == 0:
-				print("The discriminant is equal to 0")
-				print("There is one solution:")
-				print(f"x : {-self.coef.get('1', 0) / (self.coef.get('2', 0) * 2)}")
+				zeroDelta(self.coef, delta)
 			else:
-				print("The discriminant is positive")
-				print("There is two solutions:")
-				print(f"x1 : {(-self.coef.get('1', 0) + sqrt(delta)) / (2 * self.coef.get('2', 0))}")
-				print(f"x2 : {(-self.coef.get('1', 0) - sqrt(delta)) / (2 * self.coef.get('2', 0))}")
-				print(f"{fractionResult((-self.coef.get('1', 0) + sqrt(delta)), (2 * self.coef.get('2', 0)))}")
-				print(f"{fractionResult((-self.coef.get('1', 0) - sqrt(delta)), (2 * self.coef.get('2', 0)))}")
-
+				posDelta(self.coef, delta)
 		elif last_power == 1:
 			print("Polynomial degree: 1")
 			print("The solution is :")
-			print(f"{self.coef.get('0', 0) / -self.coef.get('1', 0)}")
-			print(f"{fractionResult(self.coef.get('0', 0), -self.coef.get('1', 0))}")
+			x = self.coef.get('0', 0) / -self.coef.get('1', 0)
+			print(f"{x}")
+			if (x % 1 != 0):
+				print(f"{fractionResult(self.coef.get('0', 0), -self.coef.get('1', 0))}")
 		else:
 			print("Please provide a polynomial equation")
 
