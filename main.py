@@ -1,5 +1,6 @@
 import sys as sys
 from class_PolynomialEquation import PolynomialEquationSolver
+from graphic import graphicDisplay
 
 def main():
 	try:
@@ -13,8 +14,10 @@ def main():
 		right = PolynomialEquationSolver(right.strip())
 		left.parse()
 		right.parse()
-		left.reductionForm(right)
-		left.calculDelta()
+		reducedForm = left.reductionForm(right)
+		result = left.calculDelta()
+		if result:
+			graphicDisplay(reducedForm, result)
 	except Exception as e:
 		print(e)
 

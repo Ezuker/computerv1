@@ -13,6 +13,7 @@ def posDelta(coef, delta):
 		print(f"{fractionResult((-coef.get('1', 0) + sqrt(delta)), (2 * coef.get('2', 0)))}")
 	if (x2 % 1 != 0):
 		print(f"{fractionResult((-coef.get('1', 0) - sqrt(delta)), (2 * coef.get('2', 0)))}")
+	return [x1, x2]
 
 
 def zeroDelta(coef, delta):
@@ -20,9 +21,10 @@ def zeroDelta(coef, delta):
 	print("There is one solution:")
 
 	x = -coef.get('1', 0) / (coef.get('2', 0) * 2)
-	print(f"x : {x}")
+	print(f"x1 : {x}")
 	if (x % 1 != 0):
 		print(f"{fractionResult(-coef.get('1', 0), (coef.get('2', 0) * 2))}")
+	return [x]
 
 
 def negatifDelta(coef, delta):
@@ -37,3 +39,4 @@ def negatifDelta(coef, delta):
 	if (x_reelpart % 1 != 1):
 		print(f"{fractionResult(-coef.get('1', 0), denominator)} + i * {x_imagpart}")
 		print(f"{fractionResult(-coef.get('1', 0), denominator)} - i * {x_imagpart}")
+	return None

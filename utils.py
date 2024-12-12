@@ -7,10 +7,10 @@ def format_term(coef, power, term=True):
 		return f"+ {coef} * X^{power} "
 	return f"{coef} * X^{power} "
 
-def printer(left: "PolynomialEquationSolver", right: "PolynomialEquationSolver"):
+def printer(left: dict, right: dict):
 	left_terms = []
 	term = False
-	for power, coef in left.coef.items():
+	for power, coef in left.items():
 		str = format_term(coef, int(power), term)
 		if str:
 			left_terms.append(str)
@@ -18,7 +18,7 @@ def printer(left: "PolynomialEquationSolver", right: "PolynomialEquationSolver")
 
 	right_terms = []
 	term = False
-	for power, coef in right.coef.items():
+	for power, coef in right.items():
 		str = format_term(coef, int(power), term)
 		if str:
 			right_terms.append(str)
@@ -28,14 +28,13 @@ def printer(left: "PolynomialEquationSolver", right: "PolynomialEquationSolver")
 	right_equation = ''.join(right_terms).strip()
 
 	if not left_equation and not right_equation:
-		print("0 = 0")
+		return("0 = 0")
 	elif not left_equation:
-		print(f"0 = {right_equation}")
+		return(f"0 = {right_equation}")
 	elif not right_equation:
-		print(f"{left_equation} = 0")
+		return(f"{left_equation} = 0")
 	else:
-		print(f"{left_equation} = {right_equation}")
-	print("")
+		return(f"{left_equation} = {right_equation}")
 
 
 def fractionResult(numerator, denominator):
