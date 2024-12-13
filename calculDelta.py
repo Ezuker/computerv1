@@ -1,15 +1,21 @@
 from utils import fractionResult
 
 def sqrt(x):
-    last_guess= x/2.0
-    while True:
-        guess= (last_guess + x/last_guess)/2
-        if abs(guess - last_guess) < .000001: # example threshold
-            return guess
-        last_guess= guess
+	"""
+	Function that return the sqrt of x
+	"""
+	last_guess= x/2.0
+	while True:
+		guess= (last_guess + x/last_guess)/2
+		if abs(guess - last_guess) < .000001: # example threshold
+			return guess
+		last_guess= guess
 
 
 def posDelta(coef, delta):
+	"""
+	Calcul the result with the positive delta method
+	"""
 	print("The discriminant is positive")
 	print("There is two solutions:")
 
@@ -25,6 +31,9 @@ def posDelta(coef, delta):
 
 
 def zeroDelta(coef, delta):
+	"""
+	Calcul the result with the zero delta method
+	"""
 	print("The discriminant is equal to 0")
 	print("There is one solution:")
 
@@ -36,6 +45,9 @@ def zeroDelta(coef, delta):
 
 
 def negatifDelta(coef, delta):
+	"""
+	Calcul the result with the negative delta method
+	"""
 	print("The discriminant is negative")
 	print("There is two complex solutions")
 	delta = -delta

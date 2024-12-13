@@ -1,4 +1,7 @@
 def format_term(coef, power, term=True):
+	"""
+	Translate the equation as a print format
+	"""
 	if coef == 0:
 		return ""
 	if coef < 0 and term == True:
@@ -8,6 +11,9 @@ def format_term(coef, power, term=True):
 	return f"{coef} * X^{power} "
 
 def printer(left: dict, right: dict):
+	"""
+	Return a comprehensive format of the equation
+	"""
 	left_terms = []
 	term = False
 	for power, coef in left.items():
@@ -38,6 +44,9 @@ def printer(left: dict, right: dict):
 
 
 def fractionResult(numerator, denominator):
+	"""
+	Return the irreductible fraction format
+	"""
 	def gcd(a, b):
 		"""
 		Function to find the greatest common divisor

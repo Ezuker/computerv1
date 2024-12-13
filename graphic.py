@@ -3,6 +3,9 @@ import numpy as np
 from utils import printer
 
 def translateReducedForm(reducedForm, x):
+	"""
+	Translate reducedForm (type :dict) to a result (type: float)
+	"""
 	result = 0
 	for power, coef in reducedForm.items():
 		result += float(coef) * x** float(power)
@@ -10,6 +13,10 @@ def translateReducedForm(reducedForm, x):
 
 
 def graphicDisplay(reducedForm, result):
+	"""
+	Function that display a plot and scatter the result of the equation
+	with matplotlib
+	"""
 	if len(result) == 2:
 		x = np.linspace(result[0] + (result[0] / 5), result[1] + (result[1] / 5), 400)
 	elif len(result) == 1:

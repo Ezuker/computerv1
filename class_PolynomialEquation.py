@@ -9,6 +9,10 @@ class PolynomialEquationSolver:
 
 
 	def parse(self):
+		"""
+		Parse the mathematical equation into structured coefficients.
+		Converts equation to terms, handles various input formats, and extracts coefficients by their power.
+		"""
 		self.equation = self.equation.replace('-', "+-")
 		self.terms = self.equation.split("+")
 		self.coef = {}
@@ -43,6 +47,10 @@ class PolynomialEquationSolver:
 
 
 	def reductionForm(self, otherSide: "PolynomialEquationSolver"):
+		"""
+		Substract the left side by the right side.
+		Returns the reduced left side 
+		"""
 		nb_step = 0
 		print(f"Equation :")
 		print(f"{printer(self.coef, otherSide.coef)}", end="\n\n")
@@ -58,6 +66,10 @@ class PolynomialEquationSolver:
 
 
 	def calculDelta(self):
+		"""
+		Determine the polynomial degree, calcul the delta
+		Return the result as a list
+		"""
 		self.coef = {power: coef for power, coef in self.coef.items() if coef != 0}
 		if len(self.coef) == 0:
 			print("Each real number is a solution")
