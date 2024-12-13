@@ -6,8 +6,8 @@ def main():
 	try:
 		left, right = sys.argv[1].split("=")
 	except ValueError as e:
-		print(f"Prompt must have 2 sides (example):")
-		print("\"1 * X^1 = 5\"")
+		print(f"Prompt must have 2 sides (example):", file=sys.stderr)
+		print("\"1 * X^1 = 5\"", file=sys.stderr)
 		return
 	try:
 		left = PolynomialEquationSolver(left.strip())
@@ -19,7 +19,7 @@ def main():
 		if result:
 			graphicDisplay(reducedForm, result)
 	except Exception as e:
-		print(e)
+		print(f"Error {e}", file=sys.stderr)
 
 
 if __name__ == '__main__':

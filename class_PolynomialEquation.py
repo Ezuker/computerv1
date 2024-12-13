@@ -15,10 +15,13 @@ class PolynomialEquationSolver:
 		"""
 		self.equation = self.equation.replace('-', "+-")
 		self.terms = self.equation.split("+")
+		print(self.terms)
 		self.coef = {}
-		for term in self.terms:
-			if not term:
-				continue
+		for idx, term in enumerate(self.terms):
+			if not term.strip() or term == "-":
+				if idx == 0:
+					continue
+				raise ValueError("Please, provide a good prompt")
 			
 			sign = 1
 			if term.startswith('-'):
@@ -26,19 +29,23 @@ class PolynomialEquationSolver:
 				term = term[1:]
 			
 			# match = re.match(r'^(\d*\.?\d*)\*?X?x?(?:\^(\d+))?$', term) #Previous regex (doesn't handle whitespaces)
-			match = re.match(r'^\s*(\d*\.?\d*)\s*\*?\s*X?x?(?:\^(\d+))?\s*$', term)
+			match = re.match(r'^\s*(\d*\.?/?\d*)\s*(\*?)\s*X?x?(?:\^(\d+))?\s*$', term)
 			if match:
-				coef_str, power_str = match.groups()
+				coef_str, sign_term, power_str = match.groups()
 				
-				if not coef_str and ('X' in term or 'x' in term):
+				if not coef_str and ('X' in term or 'x' in term) and not sign_term:
 					coef_str = '1'
-				elif not coef_str:
+				elif not coef_str and not sign_term:
 					coef_str = '0'
 				
 				if not power_str:
 					power = '1' if ('X' in term or 'x' in term) else '0'
 				else:
 					power = power_str
+
+				if coef_str.__contains__("/"):
+					deno, nume = coef_str.split("/")
+					coef_str = float(deno) / float(nume)
 				
 				coefficient = float(coef_str) * sign
 				self.coef[power] = self.coef.get(power, 0) + coefficient
