@@ -9,6 +9,10 @@ def main():
 		print(f"Prompt must have 2 sides (example):", file=sys.stderr)
 		print("\"1 * X^1 = 5\"", file=sys.stderr)
 		return
+	except IndexError as e:
+		print(f"Prompt must have 2 sides (example):", file=sys.stderr)
+		print("\"1 * X^1 = 5\"", file=sys.stderr)
+		return
 	try:
 		left = PolynomialEquationSolver(left.strip())
 		right = PolynomialEquationSolver(right.strip())
