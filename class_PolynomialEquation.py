@@ -15,7 +15,6 @@ class PolynomialEquationSolver:
 		"""
 		self.equation = self.equation.replace('-', "+-")
 		self.terms = self.equation.split("+")
-		print(self.terms)
 		self.coef = {}
 		for idx, term in enumerate(self.terms):
 			if not term.strip() or term == "-":
@@ -108,5 +107,5 @@ class PolynomialEquationSolver:
 				print(f"{fractionResult(self.coef.get('0', 0), -self.coef.get('1', 0))}")
 			return [x]
 		else:
-			print("Not a polynomial equation")
+			print("Error: Not a polynomial equation (and possibly impossible)")
 			return None
