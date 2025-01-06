@@ -15,9 +15,10 @@ class PolynomialEquationSolver:
 		"""
 		self.equation = self.equation.replace('-', "+-")
 		self.terms = self.equation.split("+")
+		print(self.terms)
 		self.coef = {}
 		for idx, term in enumerate(self.terms):
-			if not term.strip() or term == "-":
+			if not term.strip() or term.strip() == "-":
 				if idx == 0:
 					continue
 				raise ValueError("Please, provide a good prompt")
@@ -80,7 +81,7 @@ class PolynomialEquationSolver:
 		if len(self.coef) == 0:
 			print("Each real number is a solution")
 			return None
-		last_power = int(max(self.coef.keys()))
+		last_power = int(max(map(int, self.coef.keys())))
 
 		if last_power > 2:
 			print(f"Polynomial degree: {last_power}")
