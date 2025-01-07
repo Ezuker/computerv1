@@ -15,7 +15,6 @@ class PolynomialEquationSolver:
 		"""
 		self.equation = self.equation.replace('-', "+-")
 		self.terms = self.equation.split("+")
-		print(self.terms)
 		self.coef = {}
 		for idx, term in enumerate(self.terms):
 			if not term.strip() or term.strip() == "-":
@@ -61,6 +60,7 @@ class PolynomialEquationSolver:
 		nb_step = 0
 		print(f"Equation :")
 		print(f"{printer(self.coef, otherSide.coef)}", end="\n\n")
+		otherSide.coef = {key: value for key, value in otherSide.coef.items() if value != 0}
 		for power, coef in otherSide.coef.items():
 			selfcoef = self.coef.get(power, 0)
 			self.coef[power] = selfcoef - coef
