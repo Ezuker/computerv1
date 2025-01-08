@@ -62,9 +62,10 @@ def negatifDelta(coef, delta):
 	denominator = (2 * coef.get('2', 0))
 	x_reelpart = -coef.get('1', 0) / denominator
 	x_imagpart = sqrt(delta) / denominator
-	print(f"x1: {float_round(x_reelpart)} + i * {float_round(x_imagpart)}")
-	print(f"x2: {float_round(x_reelpart)} - i * {float_round(x_imagpart)}")
+	print(f"x1: {(x_reelpart)} + i * {(x_imagpart)}")
+	print(f"x2: {(x_reelpart)} - i * {(x_imagpart)}")
 	if (x_reelpart % 1 != 1):
-		print(f" x1 : {fractionResult(-coef.get('1', 0), denominator)} + i * {x_imagpart}")
-		print(f" x2 : {fractionResult(-coef.get('1', 0), denominator)} - i * {x_imagpart}")
+		frac_img = fractionResult(sqrt(delta), denominator)
+		print(f" x1 : {fractionResult(-coef.get('1', 0), denominator)} + i * {frac_img}")
+		print(f" x2 : {fractionResult(-coef.get('1', 0), denominator)} - i * {frac_img}")
 	return None
