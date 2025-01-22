@@ -1,16 +1,5 @@
 from utils import fractionResult
 
-def sqrt(x):
-	"""
-	Function that return the sqrt of x
-	"""
-	last_guess= x/2.0
-	while True:
-		guess= (last_guess + x/last_guess)/2
-		if abs(guess - last_guess) < .000001: # example threshold
-			return guess
-		last_guess= guess
-
 
 def float_round(value):
 	mod = value % 0.01
@@ -27,14 +16,14 @@ def posDelta(coef, delta):
 	print("The discriminant is positive")
 	print("There is two solutions:")
 
-	x1 = (-coef.get('1', 0) + sqrt(delta)) / (2 * coef.get('2', 0))
-	x2 = (-coef.get('1', 0) - sqrt(delta)) / (2 * coef.get('2', 0))
+	x1 = (-coef.get('1', 0) + (delta ** 0.5)) / (2 * coef.get('2', 0))
+	x2 = (-coef.get('1', 0) - (delta ** 0.5)) / (2 * coef.get('2', 0))
 	print(f"x1 : {x1}")
 	print(f"x2 : {x2}")
 	if (x1 % 1 != 0):
-		print(f" x1 : {fractionResult((-coef.get('1', 0) + sqrt(delta)), (2 * coef.get('2', 0)))}")
+		print(f" x1 : {fractionResult((-coef.get('1', 0) + (delta ** 0.5)), (2 * coef.get('2', 0)))}")
 	if (x2 % 1 != 0):
-		print(f" x2 : {fractionResult((-coef.get('1', 0) - sqrt(delta)), (2 * coef.get('2', 0)))}")
+		print(f" x2 : {fractionResult((-coef.get('1', 0) - (delta ** 0.5)), (2 * coef.get('2', 0)))}")
 	return [x1, x2]
 
 
@@ -61,11 +50,11 @@ def negatifDelta(coef, delta):
 	delta = -delta
 	denominator = (2 * coef.get('2', 0))
 	x_reelpart = -coef.get('1', 0) / denominator
-	x_imagpart = sqrt(delta) / denominator
+	x_imagpart = (delta ** 0.5) / denominator
 	print(f"x1: {(x_reelpart)} + i * {(x_imagpart)}")
 	print(f"x2: {(x_reelpart)} - i * {(x_imagpart)}")
 	if (x_reelpart % 1 != 1):
-		frac_img = fractionResult(sqrt(delta), denominator)
+		frac_img = fractionResult((delta ** 0.5), denominator)
 		print(f" x1 : {fractionResult(-coef.get('1', 0), denominator)} + i * {frac_img}")
 		print(f" x2 : {fractionResult(-coef.get('1', 0), denominator)} - i * {frac_img}")
 	return None
